@@ -42,12 +42,14 @@ def search_terms_in_title(title, search_terms):
     return False
     
 def save_abstracts(search_terms, output_file_path, term_in_title=False, retmax=100000):
-    id_list = []
+    id_set = set()
     for term in search_terms:
         results = search(term, str(retmax))
-        id_list.extend(results['IdList'])
+        id_set.update(results['IdList'])
     
     rows = []
+    
+    id_list = list(id_set)
     
     for i in range(0, len(id_list), 100):
         papers = fetch_details(id_list[i:i+100])
